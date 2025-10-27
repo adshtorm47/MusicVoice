@@ -1,0 +1,11 @@
+name: Build MusicVoice APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Показать сообщение
+        run: echo "MusicVoice готов к сборке!"
