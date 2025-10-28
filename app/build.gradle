@@ -1,17 +1,23 @@
-plugins {
-    id 'com.android.application' version '8.5.2'
-    id 'org.jetbrains.kotlin.android' version '1.9.24'
+// Корневой build.gradle
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:8.1.1"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.0"
+    }
 }
 
-android {
-    namespace 'com.example.musicvoice'
-    compileSdk 34
-
-    defaultConfig {
-        applicationId "com.example.musicvoice"
-        minSdk 21
-        targetSdk 34
-        versionCode 1
-        versionName "1.0"
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
     }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
