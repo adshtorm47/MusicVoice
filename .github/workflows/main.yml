@@ -18,11 +18,16 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+          cache: gradle
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
-        with:
-          cmdline-tools-version: 11076708
 
-      - name: Build with Gradle
-        run: ./gradlew assembleDebug
+      - name: Create local.properties (SDK path)
+        run: echo "sdk.dir=$ANDROID_HOME" > local.properties
+
+      - name: Build with Gradle (no wrapper)
+        uses: gradle/gradle-build-action@v3
+        with:
+          gradle-version: 8.2.1
+          arguments: assembleDebug
