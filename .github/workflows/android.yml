@@ -1,4 +1,3 @@
-
 name: Build MusicVoice
 
 on:
@@ -9,6 +8,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
 
     steps:
       - name: Checkout
@@ -18,18 +20,26 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 17
+          java-version: '17'
+          cache: gradle
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
-
-      - name: Install SDK packages (API 34)
-        run: |
-          sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
-
-      - name: Build with Gradle (assembleDebug)
-        uses: gradle/gradle-build-action@v3
         with:
-          gradle-version: 8.7
+          packages: |
+            platforms;android-34
+            build-tools;34.0.0
+            platform-tools
+
+      - name: Gradle build (assembleDebug)
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 8.2.1
           build-root-directory: app
-          arguments: assembleDebug
+          arguments: assembleDebug --stacktrace
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: MusicVoice-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
